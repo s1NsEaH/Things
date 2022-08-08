@@ -1,4 +1,16 @@
 # Get Mouse Points
+# Get Mouse Points
+$signatures = @'
+[DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)] 
+public static extern short GetAsyncKeyState(int virtualKeyCode); 
+[DllImport("user32.dll", CharSet=CharSet.Auto)]
+public static extern int GetKeyboardState(byte[] keystate);
+[DllImport("user32.dll", CharSet=CharSet.Auto)]
+public static extern int MapVirtualKey(uint uCode, int uMapType);
+[DllImport("user32.dll", CharSet=CharSet.Auto)]
+public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpkeystate, System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags);
+'@
+$API = Add-Type -MemberDefinition $signatures -Name 'Win32' -Namespace API -PassThru
 Add-Type -AssemblyName System.Windows.Forms
 [string]$xstr = "`$p1 = @("
 [string]$ystr = "`$p2 = @("
@@ -16,6 +28,8 @@ while ($true) {
         break
     }
 }
+
+
 
 # Mouse Click
 Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern void mouse_event(int flags, int dx, int dy, int cButtons, int info);' -Name U32 -Namespace W;

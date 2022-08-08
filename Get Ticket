@@ -56,9 +56,11 @@ foreach($i in 0..($p1.Count - 1)) {
 
 
 
+#http://time.navyism.com/ 멜론 서버 시간
 #[DateTime](Invoke-WebRequest "https://ticket.melon.com").Headers.Date
-$link="https://ticket.melon.com/performance/index.htm?prodId=207126"
-$link="https://ticket.melon.com/performance/index.htm?prodId=207171"
+
+$link="https://ticket.melon.com/performance/index.htm?prodId=207126"  # 아이유 콘서트 링크
+$link="https://ticket.melon.com/performance/index.htm?prodId=207171"  # 테스트 링크
 [system.Diagnostics.Process]::Start("chrome",$link)
 Start-Sleep -Milliseconds 850
 $p1 = @("446","1025")

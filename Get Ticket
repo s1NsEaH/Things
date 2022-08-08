@@ -38,3 +38,64 @@ foreach($i in 0..($p1.Count - 1)) {
     [W.U32]::mouse_event(6,0,0,0,0);
     Start-Sleep -Milliseconds 250
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#[DateTime](Invoke-WebRequest "https://ticket.melon.com").Headers.Date
+$link="https://ticket.melon.com/performance/index.htm?prodId=207126"
+$link="https://ticket.melon.com/performance/index.htm?prodId=207171"
+[system.Diagnostics.Process]::Start("chrome",$link)
+Start-Sleep -Milliseconds 850
+$p1 = @("446","1025")
+$p2 = @("731","918")
+Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern void mouse_event(int flags, int dx, int dy, int cButtons, int info);' -Name U32 -Namespace W;
+
+
+foreach($i in 0..($p1.Count - 1)) {
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($p1[$i], $p2[$i])
+    [W.U32]::mouse_event(6,0,0,0,0);
+    Start-Sleep -Milliseconds 40
+}
+
+
+$signatures = @'
+[DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)] 
+public static extern short GetAsyncKeyState(int virtualKeyCode); 
+[DllImport("user32.dll", CharSet=CharSet.Auto)]
+public static extern int GetKeyboardState(byte[] keystate);
+[DllImport("user32.dll", CharSet=CharSet.Auto)]
+public static extern int MapVirtualKey(uint uCode, int uMapType);
+[DllImport("user32.dll", CharSet=CharSet.Auto)]
+public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpkeystate, System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags);
+'@
+$API = Add-Type -MemberDefinition $signatures -Name 'Win32' -Namespace API -PassThru
+Add-Type -AssemblyName System.Windows.Forms
+
+$p1 = @("151","204","188","344")
+$p2 = @("449","511","557","581")
+
+while ($true) {
+    Start-Sleep -Milliseconds 40
+    if ($API::GetAsyncKeyState(80)) { # P Key status
+        foreach($i in 0..($p1.Count - 1)) {
+            [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($p1[$i], $p2[$i])
+            [W.U32]::mouse_event(6,0,0,0,0);
+            Start-Sleep -Milliseconds 40
+        }
+    }
+}

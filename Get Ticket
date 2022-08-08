@@ -19,7 +19,7 @@ while ($true) {
         $X = [System.Windows.Forms.Cursor]::Position.X
         $Y = [System.Windows.Forms.Cursor]::Position.Y
         Write-Host "Captured X: $X | Y: $Y"
-        $xstr += "`"$X`","; $ystr += "q`"$Y`","
+        $xstr += "`"$X`","; $ystr += "`"$Y`","
     }
     if ($API::GetAsyncKeyState(81)) { # P qKey status
         Write-Host " "

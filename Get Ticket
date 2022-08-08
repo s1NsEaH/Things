@@ -88,16 +88,24 @@ public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpkeyst
 $API = Add-Type -MemberDefinition $signatures -Name 'Win32' -Namespace API -PassThru
 Add-Type -AssemblyName System.Windows.Forms
 
-$p1 = @("151","204","188","344")
-$p2 = @("449","511","557","581")
+$p1 = @("151","204","188","344","550","584")
+$p2 = @("449","511","557","581","582","678")
 
+#$p1 = @("151","204","188","344","550","584","869")
+#$p2 = @("449","511","557","581","582","678","674")
 while ($true) {
     Start-Sleep -Milliseconds 40
     if ($API::GetAsyncKeyState(80)) { # P Key status
-        foreach($i in 0..($p1.Count - 1)) {
+        foreach($i in 0..4) {
             [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($p1[$i], $p2[$i])
             [W.U32]::mouse_event(6,0,0,0,0);
             Start-Sleep -Milliseconds 40
+        }
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+        [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+        foreach($i in 5) {
+            [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($p1[$i], $p2[$i])
+            [W.U32]::mouse_event(6,0,0,0,0);
         }
     }
 }

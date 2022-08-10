@@ -105,9 +105,9 @@ Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern void 
 $API = Add-Type -MemberDefinition $signatures -Name 'Win32' -Namespace API -PassThru
 Add-Type -AssemblyName System.Windows.Forms
 
-# ,: (날짜선택, 예매하기) | . : 새로고침 | / : 다음버튼 | ': 매수 변경#
-$Shorts1 = @("312","1050","923","914","614","606")       # 단축 기능 좌표
-$Shorts2 = @("732","910","674","327","231","266")
+# ,: (날짜선택, 예매하기) | . : 새로고침 | / : 다음버튼 | ': 매수 변경 | ` 보안문자 포커싱 #
+$Shorts1 = @("312","1050","923","914","614","606","455")       # 단축 기능 좌표
+$Shorts2 = @("732","910","674","327","231","266","441")
 
 $p1 = @("151","204","188","344","550","584") # 마지막 결제 단계 자동화 좌표
 $p2 = @("449","511","557","581","582","678")
@@ -122,11 +122,11 @@ while ($true) {
             Start-Sleep -Milliseconds 40
         }
         [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+        [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($p1[5], $p2[5])
+        [W.U32]::mouse_event(6,0,0,0,0);
+        Start-Sleep -Milliseconds 40
         [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
-        foreach($i in 5) {
-            [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($p1[$i], $p2[$i])
-            [W.U32]::mouse_event(6,0,0,0,0);
-        }
+        [W.U32]::mouse_event(6,0,0,0,0);
     }
     elseif ($API::GetAsyncKeyState(188)) { # Number , Key status, ,: (날짜선택, 예매하기)
         foreach($i in 0..1) {
@@ -135,20 +135,25 @@ while ($true) {
             Start-Sleep -Milliseconds 40
         }
     }
-    elseif ($API::GetAsyncKeyState(222)) { # Number ' Key status, ': 매수 변경
+    elseif ($API::GetAsyncKeyState(190)) { # Number ' Key status, ': 매수 변경
         foreach($i in 4..5) {
             [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($Shorts1[$i], $Shorts2[$i])
             [W.U32]::mouse_event(6,0,0,0,0);
             Start-Sleep -Milliseconds 40
         }
     }
-    elseif ($API::GetAsyncKeyState(190)) { # Number . Key status, .: 새로 고침
+    elseif ($API::GetAsyncKeyState(222)) { # Number . Key status, .: 새로 고침
         [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($Shorts1[3], $Shorts2[3])
         [W.U32]::mouse_event(6,0,0,0,0);
         Start-Sleep -Milliseconds 40
     }
     elseif ($API::GetAsyncKeyState(191)) { # Number / Key status, /: 다음 버튼
         [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($Shorts1[2], $Shorts2[2])
+        [W.U32]::mouse_event(6,0,0,0,0);
+        Start-Sleep -Milliseconds 40
+    }
+    elseif ($API::GetAsyncKeyState(192)) { # Number ` Key status, `: 다음 버튼
+        [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($Shorts1[6], $Shorts2[6])
         [W.U32]::mouse_event(6,0,0,0,0);
         Start-Sleep -Milliseconds 40
     }

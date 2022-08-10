@@ -105,9 +105,9 @@ Add-Type -MemberDefinition '[DllImport("user32.dll")] public static extern void 
 $API = Add-Type -MemberDefinition $signatures -Name 'Win32' -Namespace API -PassThru
 Add-Type -AssemblyName System.Windows.Forms
 
-# ,: (날짜선택, 예매하기) | . : 새로고침 | / : 다음버튼 | ': 매수 변경 | ` 보안문자 포커싱 #
-$Shorts1 = @("312","1050","923","914","614","606","455")       # 단축 기능 좌표
-$Shorts2 = @("732","910","674","327","231","266","441")
+# ,: (날짜선택, 예매하기) | . : 새로고침 | / : 다음버튼 | ': 매수 변경 | ` 보안문자 포커싱 | 좌석 전체보기 #
+$Shorts1 = @("312","1050","923","916","614","606","455","907")       # 단축 기능 좌표
+$Shorts2 = @("732","910","674","354","231","266","441","309")
 
 $p1 = @("151","204","188","344","550","584") # 마지막 결제 단계 자동화 좌표
 $p2 = @("449","511","557","581","582","678")
@@ -154,6 +154,11 @@ while ($true) {
     }
     elseif ($API::GetAsyncKeyState(192)) { # Number ` Key status, `: 다음 버튼
         [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($Shorts1[6], $Shorts2[6])
+        [W.U32]::mouse_event(6,0,0,0,0);
+        Start-Sleep -Milliseconds 40
+    }
+    elseif ($API::GetAsyncKeyState(219)) { # Number ` Key status, `: 좌석 전체보기
+        [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($Shorts1[7], $Shorts2[7])
         [W.U32]::mouse_event(6,0,0,0,0);
         Start-Sleep -Milliseconds 40
     }
